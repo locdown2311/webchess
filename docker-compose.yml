@@ -21,8 +21,6 @@ services:
   phpmyadmin:
       image: phpmyadmin
       restart: always
-      ports:
-        - 8082:80
       networks:
         - proxy
         - internal
