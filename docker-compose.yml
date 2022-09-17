@@ -7,8 +7,6 @@ networks:
 services:
   mysql:
     image: mariadb:latest
-    expose:
-      - "3306"
     environment:
       MYSQL_ROOT_PASSWORD: S3cret
       MYSQL_PASSWORD: An0thrS3crt
@@ -34,8 +32,6 @@ services:
   php-7.4:
     image: php:7.4-apache
     #command: bash -c "docker-php-ext-install mysqli && docker-php-ext-enable mysqli"
-    ports:
-      - 8085:443
     networks:
         - proxy
         - internal
