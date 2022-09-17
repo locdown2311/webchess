@@ -6,12 +6,14 @@ networks:
     external: false
 services:
   mysql:
-    image: mysql
+    image: mariadb:latest
     expose:
       - "3306"
     environment:
-      MYSQL_ROOT_PASSWORD: 12345
-      MYSQL_DATABASE: admin
+      MYSQL_ROOT_PASSWORD: S3cret
+      MYSQL_PASSWORD: An0thrS3crt
+      MYSQL_USER: citizix_user
+      MYSQL_DATABASE: citizix_db
     networks:
       - internal
     volumes:
