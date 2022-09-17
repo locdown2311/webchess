@@ -1,0 +1,49 @@
+version: '3.1'
+networks:
+  proxy:
+    external: true
+  internal:
+    external: false
+services:
+  mysql:
+    image: mysql
+    expose:
+      - "3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345
+      MYSQL_DATABASE: admin
+    networks:
+      - internal
+    volumes:
+      - ./db/ :/docker-entrypoint-initdb.d/
+    
+
+  phpmyadmin:
+      image: phpmyadmin
+      restart: always
+      ports:
+        - 8082:80
+      networks:
+        - proxy
+        - internal
+      environment:
+        - PMA_ARBITRARY=1
+
+  php-7.4:
+    image: php:7.4-apache
+    ports:
+      - 8085:443
+    networks:
+        - proxy
+        - internal
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.chess.entrypoints=websecure
+      - traefik.http.routers.chess.rule=Host(`chess.mpatos.cloud`)
+    volumes:
+      - ./log/apache2:/var/log/apache2
+      - ./:/var/www/html
+      
+    depends_on:
+      - mysql
+      - phpmyadmin
